@@ -1,27 +1,35 @@
 'use strict';
+/** Ref: https://sequelize.org/master/manual/model-basics.html */
+// You can specify a custom column name via the 'field' attribute:
+// fieldWithUnderscores: { type: DataTypes.STRING, field: 'field_with_underscores' },
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Matchs', {
+    await queryInterface.createTable('matchs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      home_team: {
-        type: Sequelize.INTEGER
-      },
-      home_team_goals: {
+      homeTeam: {
         type: Sequelize.INTEGER,
+        field: 'home_team',
       },
-      away_team: {
+      homeTeamGoals: {
         type: Sequelize.INTEGER,
+        field: 'home_team_goals',
       },
-      away_team_goals: {
+      awayTeam: {
         type: Sequelize.INTEGER,
+        field: 'away_team',
       },
-      in_progress: {
+      awayTeamGoals: {
         type: Sequelize.INTEGER,
+        field: 'away_team_goals',
+      },
+      inProgress: {
+        type: Sequelize.INTEGER,
+        field: 'in_progress',
       }
     });
   },

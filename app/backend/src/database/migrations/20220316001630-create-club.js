@@ -1,15 +1,16 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Clubs', {
+    await queryInterface.createTable('clubs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      clube_name: {
-        type: Sequelize.STRING
+      clubeName: {
+        type: Sequelize.STRING,
+        field: 'club_name',
       },
     });
   },

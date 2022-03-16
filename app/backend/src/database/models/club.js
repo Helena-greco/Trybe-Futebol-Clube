@@ -1,7 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   const Club = sequelize.define('Club', {
-    id: { type: DataTypes.INTEGER },
-    club_name: { type: DataTypes.STRING },
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
+    clubName: { type: DataTypes.STRING, allowNull: false },
   }, {
     sequelize,
     modelName: 'clubs',
