@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     in_progress: { type: DataTypes.INTEGER },
   }, {
     sequelize,
-    modelName: 'Matchs',
+    modelName: 'matchs',
   });
 
   return Match;

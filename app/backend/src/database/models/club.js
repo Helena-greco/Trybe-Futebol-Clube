@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     club_name: { type: DataTypes.STRING },
   }, {
     sequelize,
-    modelName: 'Clubs',
+    modelName: 'clubs',
   });
 
   return Club;
