@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
-import userModel from '../models/user';
+import Users from '../models/user';
 import { ILogin } from '../interface/ILogin';
 
 const validEmail = (email: string) => {
@@ -35,9 +35,9 @@ const validatePassword = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-const secret = fs.readFileSync('../jwt.evaluation.key', { encoding: 'utf8', flag: 'r' });
+const secret = fs.readFileSync('jwt.evaluation.key', { encoding: 'utf8', flag: 'r' });
 
-const tokenValid = async (req: Request, res: Response, next: NextFunction) => {
+const tokenValid = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization;
 
@@ -53,8 +53,8 @@ const tokenValid = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const userLogin = async (email:string, password:string) => {
-  const user = await userModel.findOne({ where: { email, password } });
+const userLogin = async (email:string) => {
+  const user = await Users.findOne({ where: { email } });
   if (!user) throw new Error('User not found');
   return user;
 };

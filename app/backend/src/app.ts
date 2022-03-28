@@ -1,7 +1,7 @@
 import * as express from 'express';
-// import loginRouter from './router/loginRouter';
-import loginService from './database/services/loginService';
-import userLogin from './database/controllers/loginController';
+import router from './router/loginRouter';
+// import loginService from './database/services/loginService';
+// import userLogin from './database/controllers/loginController';
 
 class App {
   public app: express.Express;
@@ -20,13 +20,8 @@ class App {
     };
 
     this.app.use(accessControl);
-    this.app.post(
-      '/login',
-      loginService.validateEmail,
-      loginService.validatePassword,
-      loginService.tokenValid,
-      userLogin,
-    );
+    this.app.use(express.json());
+    this.app.use('/', router);
   }
 
   public start(PORT: string | number):void {
