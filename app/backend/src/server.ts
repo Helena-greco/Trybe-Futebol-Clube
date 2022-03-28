@@ -3,4 +3,5 @@ import 'dotenv/config';
 
 const PORT = process.env.PORT || 3001;
 
-new App().start(PORT);
+const newApp = new App();
+newApp.start(PORT);

@@ -2,9 +2,10 @@ version: '3.9'
 services:
   frontend:
     build: ./frontend
-    ports:
-      - 3000:3000
     # ...
+    container_name: app_frontend
+    ports: 
+    - 3000:3000
     depends_on:
       backend:
         condition: service_healthy
@@ -17,6 +18,9 @@ services:
   backend:
     build: ./backend
     # ...
+    container_name: app_backend
+    ports: 
+    - 3001:3001
     depends_on:
       db:
         condition: service_healthy
@@ -34,7 +38,6 @@ services:
       timeout: 10s
       retries: 5
   db:
-    platform: linux/x86_64
     image: mysql:8.0.21
     container_name: db
     ports:

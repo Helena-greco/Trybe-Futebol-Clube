@@ -1,21 +1,30 @@
 import { Request, Response } from 'express';
+import * as bcrypt from 'bcryptjs';
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import loginService from '../services/loginService';
-import { ILogin, IUser } from '../interface/ILogin';
+import { ILogin } from '../interface/ILogin';
 
-const secret = fs.readFileSync('./jwt.evaluation.key', 'utf-8');
+const secret = fs.readFileSync('../jwt.evaluation.key', { encoding: 'utf8', flag: 'r' });
 
 const userLogin = async (req: Request, res: Response) => {
   const { email, password }: ILogin = req.body;
 
-  const user = await loginService.userLogin({ email, password });
+  const users = await loginService.userLogin(email, password);
 
-  const { id, username, role } = user as IUser;
+  const crypt = bcrypt.compareSync(password, users.password);
+  if (!crypt) return res.status(401).json({ message: 'Email or password is invalid' });
 
-  const token = jwt.sign({ username }, secret, { algorithm: 'HS256' });
+  const token = jwt.sign({ email }, secret, { algorithm: 'HS256' });
 
-  return res.status(200).json({ user: { id, username, role, email }, token });
+  const user = {
+    id: users.id,
+    username: users.username,
+    role: users.role,
+    email: users.email,
+  };
+
+  return res.status(200).json({ user, token });
 };
 
 export default userLogin;

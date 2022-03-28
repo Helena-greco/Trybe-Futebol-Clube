@@ -4,6 +4,6 @@ import userLogin from '../database/controllers/loginController';
 
 const loginRouter = express.Router();
 
-loginRouter.post('/', loginService.validateEmail, loginService.validatePassword, userLogin);
+loginRouter.post('/login', loginService.validateEmail, loginService.validatePassword, userLogin);
 
 export default loginRouter;

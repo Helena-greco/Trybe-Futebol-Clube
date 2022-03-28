@@ -1,15 +1,14 @@
 import * as express from 'express';
-import loginRouter from './router/loginRouter';
+// import loginRouter from './router/loginRouter';
+import loginService from './database/services/loginService';
+import userLogin from './database/controllers/loginController';
 
 class App {
   public app: express.Express;
-  // ...
 
   constructor() {
     this.app = express();
-    this.app.use(express.json());
     this.config();
-    // ...
   }
 
   private config():void {
@@ -21,11 +20,15 @@ class App {
     };
 
     this.app.use(accessControl);
-    this.app.use('/login', loginRouter);
-    // ...
+    this.app.post(
+      '/login',
+      loginService.validateEmail,
+      loginService.validatePassword,
+      loginService.tokenValid,
+      userLogin,
+    );
   }
 
-  // ...
   public start(PORT: string | number):void {
     this.app.listen(PORT, () => console.log(`escutando na porta ${PORT}`));
   }

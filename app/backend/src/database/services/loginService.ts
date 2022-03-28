@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import * as fs from 'fs';
+import * as jwt from 'jsonwebtoken';
 import userModel from '../models/user';
 import { ILogin } from '../interface/ILogin';
 
@@ -33,13 +35,33 @@ const validatePassword = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-const userLogin = async ({ email, password }: ILogin) => {
+const secret = fs.readFileSync('../jwt.evaluation.key', { encoding: 'utf8', flag: 'r' });
+
+const tokenValid = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) return res.status(401).json({ message: 'Token not found' });
+
+    const decoded = jwt.verify(token, secret);
+
+    if (!decoded) return res.status(401).json({ message: 'Token not found' });
+
+    next();
+  } catch (error) {
+    return res.status(401).send({ message: 'Expired or invalid token' });
+  }
+};
+
+const userLogin = async (email:string, password:string) => {
   const user = await userModel.findOne({ where: { email, password } });
-  return user as userModel;
+  if (!user) throw new Error('User not found');
+  return user;
 };
 
 export default {
   validateEmail,
   validatePassword,
+  tokenValid,
   userLogin,
 };
