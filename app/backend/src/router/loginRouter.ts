@@ -12,4 +12,8 @@ router
     userLogin,
   );
 
+router
+  .route('/login/validate')
+  .get(loginService.tokenValid);
+
 export default router;

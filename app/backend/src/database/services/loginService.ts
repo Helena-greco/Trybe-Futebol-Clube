@@ -13,11 +13,11 @@ const validateEmail = (req: Request, res: Response, next: NextFunction) => {
   const { email }: ILogin = req.body;
 
   if (!email) {
-    return res.status(400).json({ message: '"email" is required' });
+    return res.status(401).json({ message: 'All fields must be filled' });
   }
 
   if (!validEmail(email)) {
-    return res.status(400).json({ message: '"email" must be a valid email' });
+    return res.status(401).json({ message: 'Incorrect email or password' });
   }
 
   next();
@@ -26,26 +26,30 @@ const validateEmail = (req: Request, res: Response, next: NextFunction) => {
 const validatePassword = (req: Request, res: Response, next: NextFunction) => {
   const { password }: ILogin = req.body;
   if (!password) {
-    return res.status(400).json({ message: '"email" is required' });
+    return res.status(401).json({ message: 'All fields must be filled' });
   }
 
   if (password.length < 6) {
-    return res.status(400).json({ message: '"password" must be 7 characters long' });
+    return res.status(401).json({ message: 'Incorrect email or password' });
   }
   next();
 };
 
 const secret = fs.readFileSync('jwt.evaluation.key', { encoding: 'utf8', flag: 'r' });
 
-const tokenValid = (req: Request, res: Response, next: NextFunction) => {
+const tokenValid = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization;
 
     if (!token) return res.status(401).json({ message: 'Token not found' });
 
     const decoded = jwt.verify(token, secret);
+    console.log(decoded);
+    const user = await Users.findOne({ where: { email: decoded } });
 
-    if (!decoded) return res.status(401).json({ message: 'Token not found' });
+    if (!user) {
+      return res.status(401).json({ message: 'User does not exist' });
+    }
 
     next();
   } catch (error) {
