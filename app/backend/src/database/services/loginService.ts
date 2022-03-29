@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import Users from '../models/user';
-import { ILogin } from '../interface/ILogin';
+import { ILogin, Payload } from '../interface/ILogin';
 
 const validEmail = (email: string) => {
   const emailFormat = /\S+@\S+\.\S+/;
@@ -13,7 +13,7 @@ const validateEmail = (req: Request, res: Response, next: NextFunction) => {
   const { email }: ILogin = req.body;
 
   if (!email) {
-    return res.status(401).json({ message: 'All fields must be filled' });
+    return res.status(401).json({ email, message: 'All fields must be filled' });
   }
 
   if (!validEmail(email)) {
@@ -37,19 +37,17 @@ const validatePassword = (req: Request, res: Response, next: NextFunction) => {
 
 const secret = fs.readFileSync('jwt.evaluation.key', { encoding: 'utf8', flag: 'r' });
 
-const tokenValid = async (req: Request, res: Response, next: NextFunction) => {
+const tokenValid = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers.authorization;
 
     if (!token) return res.status(401).json({ message: 'Token not found' });
 
     const decoded = jwt.verify(token, secret);
-    console.log(decoded);
-    const user = await Users.findOne({ where: { email: decoded } });
 
-    if (!user) {
-      return res.status(401).json({ message: 'User does not exist' });
-    }
+    const { role } = decoded as Payload;
+
+    return res.status(200).json(role);
 
     next();
   } catch (error) {

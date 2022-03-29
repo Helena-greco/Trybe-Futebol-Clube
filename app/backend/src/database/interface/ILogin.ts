@@ -8,3 +8,9 @@ export interface IUser extends ILogin {
   username: string;
   role: string;
 }
+
+export interface Payload {
+  email: string
+  role: string,
+  iat: number,
+}

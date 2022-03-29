@@ -11,11 +11,12 @@ const userLogin = async (req: Request, res: Response) => {
   const { email, password }: ILogin = req.body;
 
   const users = await loginService.userLogin(email);
+  const { role } = users;
 
   const crypt = bcrypt.compareSync(password, users.password);
   if (!crypt) return res.status(401).json({ message: 'Email or password is invalid' });
 
-  const token = jwt.sign({ email }, secret, { algorithm: 'HS256' });
+  const token = jwt.sign({ email, role }, secret, { algorithm: 'HS256' });
 
   const user = {
     id: users.id,
