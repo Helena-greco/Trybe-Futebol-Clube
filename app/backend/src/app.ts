@@ -1,7 +1,7 @@
 import * as express from 'express';
+import * as cors from 'cors';
 import router from './router/loginRouter';
-// import loginService from './database/services/loginService';
-// import userLogin from './database/controllers/loginController';
+import clubRouter from './router/clubRouter';
 
 class App {
   public app: express.Express;
@@ -20,8 +20,10 @@ class App {
     };
 
     this.app.use(accessControl);
+    this.app.use(cors());
     this.app.use(express.json());
     this.app.use('/', router);
+    this.app.use('/', clubRouter);
   }
 
   public start(PORT: string | number):void {
