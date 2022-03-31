@@ -38,7 +38,15 @@ const createMatch = async (req: Request, res: Response) => {
   return res.status(201).json(match);
 };
 
+const finishedMatch = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const updatedMatch = await matchService.finishedMatch(Number(id));
+  if (!updatedMatch) return res.status(401).json({ message: 'There is no match to finish!' });
+  return res.status(200).json(updatedMatch);
+};
+
 export default {
   getAll,
   createMatch,
+  finishedMatch,
 };

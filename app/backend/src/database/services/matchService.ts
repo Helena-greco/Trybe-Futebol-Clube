@@ -72,10 +72,16 @@ const tokenValid = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const finishedMatch = async (id: number) => {
+  const updateStatus = await Matchs.update({ inProgress: 0 }, { where: { id } });
+  return updateStatus;
+};
+
 export default {
   getAllMatchs,
   getInProgress,
   teamById,
   createMatch,
   tokenValid,
+  finishedMatch,
 };

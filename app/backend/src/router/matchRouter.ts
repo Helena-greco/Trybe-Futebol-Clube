@@ -6,10 +6,11 @@ const match = express.Router();
 
 match
   .route('/matchs')
-  .get(matchController.getAll);
+  .get(matchController.getAll)
+  .post(matchService.tokenValid, matchController.createMatch);
 
 match
-  .route('/matchs')
-  .post(matchService.tokenValid, matchController.createMatch);
+  .route('/matchs/:id/finish')
+  .patch(matchController.finishedMatch);
 
 export default match;
