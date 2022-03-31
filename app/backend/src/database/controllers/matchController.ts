@@ -41,12 +41,20 @@ const createMatch = async (req: Request, res: Response) => {
 const finishedMatch = async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedMatch = await matchService.finishedMatch(Number(id));
-  if (!updatedMatch) return res.status(401).json({ message: 'There is no match to finish!' });
   return res.status(200).json(updatedMatch);
+};
+
+const updateGoals = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { homeTeamGoals, awayTeamGoals } = req.body;
+
+  await matchService.updateGoals(Number(id), homeTeamGoals, awayTeamGoals);
+  return res.status(200).json({ message: 'Updated successfully' });
 };
 
 export default {
   getAll,
   createMatch,
   finishedMatch,
+  updateGoals,
 };

@@ -10,6 +10,10 @@ match
   .post(matchService.tokenValid, matchController.createMatch);
 
 match
+  .route('/matchs/:id')
+  .patch(matchController.updateGoals);
+
+match
   .route('/matchs/:id/finish')
   .patch(matchController.finishedMatch);
 

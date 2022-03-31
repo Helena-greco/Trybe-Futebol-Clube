@@ -73,8 +73,16 @@ const tokenValid = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const finishedMatch = async (id: number) => {
-  const updateStatus = await Matchs.update({ inProgress: 0 }, { where: { id } });
+  const updateStatus = await Matchs.update({ inProgress: false }, { where: { id } });
   return updateStatus;
+};
+
+const updateGoals = async (id: number, homeTeamGoals: number, awayTeamGoals: number) => {
+  const updatingGoals = await Matchs.update(
+    { homeTeamGoals, awayTeamGoals },
+    { where: { id, inProgress: true } },
+  );
+  return updatingGoals;
 };
 
 export default {
@@ -84,4 +92,5 @@ export default {
   createMatch,
   tokenValid,
   finishedMatch,
+  updateGoals,
 };
