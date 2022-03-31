@@ -1,14 +1,14 @@
 import * as express from 'express';
 import clubController from '../database/controllers/clubController';
 
-const clubRouter = express.Router();
+const club = express.Router();
 
-clubRouter
+club
   .route('/clubs')
   .get(clubController.allClubs);
 
-clubRouter
+club
   .route('/clubs/:id')
   .get(clubController.clubById);
 
-export default clubRouter;
+export default club;

@@ -27,7 +27,7 @@ Matchs.init({
   homeTeamGoals: { type: DataTypes.INTEGER, allowNull: false },
   awayTeam: { type: DataTypes.INTEGER, allowNull: false },
   awayTeamGoals: { type: DataTypes.INTEGER, allowNull: false },
-  inProgress: { type: DataTypes.INTEGER, allowNull: false },
+  inProgress: { type: DataTypes.BOOLEAN, allowNull: false },
 }, {
   underscored: true,
   sequelize: db,
@@ -40,10 +40,10 @@ Matchs.init({
   * Associations 1:N devem ficar em uma das instâncias de modelo
   * */
 
-Clubs.belongsTo(Matchs, { foreignKey: 'id', as: 'homeTeam' });
-Clubs.belongsTo(Matchs, { foreignKey: 'id', as: 'awayTeam' });
+Clubs.belongsTo(Matchs, { foreignKey: 'id', as: 'homeClub' });
+Clubs.belongsTo(Matchs, { foreignKey: 'id', as: 'awayClub' });
 
-Matchs.hasMany(Clubs, { foreignKey: 'id', as: 'homeTeam' });
-Matchs.hasMany(Clubs, { foreignKey: 'id', as: 'awayTeam' });
+Matchs.hasMany(Clubs, { foreignKey: 'id', as: 'homeClub' });
+Matchs.hasMany(Clubs, { foreignKey: 'id', as: 'awayClub' });
 
 export default Matchs;
