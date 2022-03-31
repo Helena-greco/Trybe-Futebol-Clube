@@ -40,8 +40,8 @@ const createMatch = async (req: Request, res: Response) => {
 
 const finishedMatch = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const updatedMatch = await matchService.finishedMatch(Number(id));
-  return res.status(200).json(updatedMatch);
+  await matchService.finishedMatch(Number(id));
+  return res.status(200).json({ message: 'Updated successfully' });
 };
 
 const updateGoals = async (req: Request, res: Response) => {
