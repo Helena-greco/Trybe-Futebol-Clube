@@ -7,8 +7,8 @@ import Matchs from '../models/match';
 const getAllMatchs = async () => {
   const getAll = await Matchs.findAll({
     include: [
-      { model: Clubs, as: 'homeClub', attributes: ['clubName'] },
-      { model: Clubs, as: 'awayClub', attributes: ['clubName'] },
+      { model: Clubs, as: 'homeClub', attributes: { exclude: ['id'] } },
+      { model: Clubs, as: 'awayClub', attributes: { exclude: ['id'] } },
     ],
   });
 
