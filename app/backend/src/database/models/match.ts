@@ -13,7 +13,7 @@ class Matchs extends Model {
 
   public awayTeamGoals: number;
 
-  public inProgress: boolean;
+  public inProgress: boolean; // transformando pra boolean, dica do Elithon para facilitar
 }
 
 Matchs.init({

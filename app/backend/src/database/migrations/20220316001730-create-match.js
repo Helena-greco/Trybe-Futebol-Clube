@@ -28,7 +28,7 @@ module.exports = {
         field: 'away_team_goals',
       },
       inProgress: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.BOOLEAN, // transformando pra boolean, dica do Elithon para facilitar 
         field: 'in_progress',
       }
     });
