@@ -80,7 +80,7 @@ const finishedMatch = async (id: number) => {
 const updateGoals = async (id: number, homeTeamGoals: number, awayTeamGoals: number) => {
   const updatingGoals = await Matchs.update(
     { homeTeamGoals, awayTeamGoals },
-    { where: { id, inProgress: true } },
+    { where: { id, inProgress: true } }, // partidas em andamento, somente
   );
   return updatingGoals;
 };
