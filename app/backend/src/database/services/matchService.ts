@@ -1,3 +1,7 @@
+import { Request, Response, NextFunction } from 'express';
+import * as fs from 'fs';
+import * as jwt from 'jsonwebtoken';
+import { Payload } from '../interface/ILogin';
 import Clubs from '../models/club';
 import Matchs from '../models/match';
 
@@ -29,9 +33,49 @@ const getInProgress = async (inProgress: string) => {
   return matchs;
 };
 
-// função para verificar o time da casa e o time convidado
+const teamById = async (id: number) => {
+  const team = await Clubs.findByPk(id);
+  return team;
+};
+
+// função para criar uma nova partida
+const createMatch = async (newMatch: Matchs) => {
+  const create = await Matchs.create(newMatch);
+
+  return {
+    id: create.id,
+    homeTeam: create.homeTeam,
+    homeTeamGoals: create.homeTeamGoals,
+    awayTeam: create.awayTeam,
+    awayTeamGoals: create.awayTeamGoals,
+    inProgress: create.inProgress,
+  };
+};
+
+const secret = fs.readFileSync('jwt.evaluation.key', { encoding: 'utf8', flag: 'r' });
+
+const tokenValid = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) return res.status(401).json({ message: 'Token not found' });
+
+    const decoded = jwt.verify(token, secret);
+
+    const { email } = decoded as Payload;
+
+    req.body.email = email;
+
+    next();
+  } catch (error) {
+    return res.status(401).send({ message: 'Expired or invalid token' });
+  }
+};
 
 export default {
   getAllMatchs,
   getInProgress,
+  teamById,
+  createMatch,
+  tokenValid,
 };
