@@ -1,10 +1,14 @@
 import * as express from 'express';
-import leaderBoard from '../database/controllers/leaderboard';
+import controller from '../database/controllers/leaderboard';
 
 const leader = express.Router();
 
 leader
   .route('/leaderboard/home')
-  .get(leaderBoard);
+  .get(controller.leaderBoardHome);
+
+leader
+  .route('/leaderboard/away')
+  .get(controller.leaderBoardAway);
 
 export default leader;
